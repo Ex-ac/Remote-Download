@@ -1,0 +1,2 @@
+document.write("<iframe src='https://www.openhub.net/p/aria2/widgets/project_partner_badge', scrolling='no', marginHeight='0', marginWidth='0', style='height: 50px; width: 245px; border: none'></iframe>");
+

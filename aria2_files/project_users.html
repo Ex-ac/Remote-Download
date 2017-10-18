@@ -1,0 +1,141 @@
+
+<!-- saved from url=(0064)https://www.openhub.net/p/aria2/widgets/project_users?style=blue -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>
+  @font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    src: asset-url('OpenSans-Regular.woff') format('woff');
+  }
+</style>
+
+<style>
+  .users_with_style {
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    width: 80px;
+    border: 1px solid #000;
+    text-align: center;
+    font-family: Open Sans;
+    font-weight: normal;
+    font-size: 12px;
+    color: #fff; }
+    .users_with_style a {
+      color: #ffffff;
+      text-decoration: none; }
+      .users_with_style a img {
+        margin: 3px auto;
+        vertical-align: middle;
+        border: 0;
+        width: 69px;
+        height: 13px; }
+    .users_with_style .rainbow {
+      background: -webkit-gradient(linear, left center, right center, color-stop(0%, #B6010C), color-stop(12%, #9B015C), color-stop(25%, #6315DF), color-stop(37%, #2A43F4), color-stop(50%, #01843E), color-stop(63%, #018707), color-stop(75%, #3A4F01), color-stop(87%, #533701), color-stop(100%, #821E01));
+      background: linear-gradient(to right, #B6010C, #9B015C, #6315DF, #2A43F4, #01843E, #018707, #3A4F01, #533701, #821E01);
+      background-color: #C7C7C9; }
+    .users_with_style .info {
+      margin: 0;
+      padding: 8px 0;
+      width: 80px; }
+      .users_with_style .info .count {
+        font-weight: bold;
+        font-size: 16pt;
+        margin: 0 auto;
+        padding: 0;
+        letter-spacing: -0.05em; }
+      .users_with_style .info .user {
+        margin: 0 auto;
+        padding: 0;
+        letter-spacing: -0.03em;
+        font-weight: bold;
+        font-size: 11px; }
+    .users_with_style .iuseit_container {
+      margin: 0;
+      padding: 0;
+      overflow: hidden; }
+      .users_with_style .iuseit_container #iuseit {
+        margin: 0;
+        padding: 2px 0;
+        font-weight: bold;
+        font-size: 14px;
+        letter-spacing: -0.03em;
+        background-color: #828181;
+        width: 80px; }
+  
+  .users_without_style {
+    margin: 0;
+    padding: 0;
+    background-color: #E9E8E8;
+    width: 80px;
+    border: 1px solid #000;
+    text-align: center;
+    font-family: "Open Sans";
+    font-weight: normal;
+    font-size: 12px;
+    color: #000; }
+    .users_without_style a img {
+      margin: 3px auto;
+      border: 0;
+      width: 69px;
+      height: 13px; }
+    .users_without_style a .last {
+      display: block;
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid #5F6062;
+      width: 80px;
+      height: 2px;
+      overflow: hidden; }
+    .users_without_style a #iuseit {
+      border: 1px solid #898989;
+      width: 67px;
+      margin: 8px auto;
+      color: #5F6062; }
+    .users_without_style a .user {
+      font-size: 10px; }
+    .users_without_style a .count {
+      margin-top: 5px; }
+    .users_without_style a {
+      color: #000;
+      text-decoration: none; }
+</style>
+
+<script>
+  function mouseOverForUsers(parent) {
+    var elem = parent.getElementsByClassName('used_link')[0];
+    elem.style.background = '#ffffff';
+    elem.style.backgroundColor = '#ffffff';
+    elem.style.color = '#000000';
+  }
+  
+  function mouseOutForUsers(parent) {
+    var elem = parent.getElementsByClassName('used_link')[0];
+    elem.style.color = '#ffffff';
+    elem.style.background = '#828181';
+    elem.style.background = 'linear-gradient(to right, #828181, #A4A3A3, #828181)';
+    elem.style.background = '-webkit-gradient(linear, left top, right bottom, color-stop(0%, #828181), color-stop(55%, #A4A3A3), color-stop(130%, #828181))';
+    elem.style.backgroundColor = '#828181';
+  }
+  
+  function mouseOverForUsersWithoutStyle(parent) {
+    parent.getElementsByClassName('non_css_used_link')[0].style.color = '#000';
+    parent.getElementsByClassName('non_css_used_link')[0].style.fontWeight = 'bold';
+  }
+  
+  function mouseOutForUsersWithoutStyle(parent) {
+    parent.getElementsByClassName('non_css_used_link')[0].style.color = '#5F6062';
+    parent.getElementsByClassName('non_css_used_link')[0].style.fontWeight = 'normal';
+  }
+</script>
+
+</head><body marginwidth="0" marginheight="0"><div class="users_with_style">
+<a title="Support aria2 by adding it to your stack at Open Hub" target="_blank" onmouseover="mouseOverForUsers(this);" onmouseout="mouseOutForUsers(this);" href="https://www.openhub.net/stack_entries/new?project_id=aria2&amp;ref=ProjectWidget%3A%3AUsers"><img src="./openhublogo-aa7cfb70312072afbc2c92375788dfe929a32d0117ec3295bf6a936529052e5f.png" alt="Openhublogo">
+<div class="info" style="background-color: #036CB6">
+<p class="count">119</p>
+<p class="user">USERS</p>
+</div>
+<div class="iuseit_container">
+<div class="used_link" id="iuseit">I USE IT</div>
+</div>
+</a></div>
+</body></html>
