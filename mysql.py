@@ -1,5 +1,7 @@
-import pymysql.cursors
+import pymysql
 import hashlib
+import datetime
+import os
 
 StaticConfig = {
     "host": "extryi.top",
@@ -14,124 +16,128 @@ StaticConfig = {
 class Aria2cMySQL:
 
     def __init__(self):
-        self._connection = None;
-        self.cursor = None;
+        self._connection = None
+        self.cursor = None
 
-    def connect(self, config = {}):
+    def connect(self, config={}):
 
-        global StaticConfig;
-        temp = StaticConfig;
-        temp.update(config);
+        global StaticConfig
+        temp = StaticConfig
+        temp.update(config)
 
         try:
-            self._connection = pymysql.connect(**temp);
-            self._cursor = self._connection.cursor();
-            return True;
+            self._connection = pymysql.connect(**temp)
+            self._cursor = self._connection.cursor()
+            return True
         except Exception as identifier:
-            print(identifier);
-            return False;
+            print(identifier)
+            return False
 
-    def cretaeUser(self, userName, password, email = None):
-        temp = hashlib.md5();
-        temp.update(password.encode("utf-8"));
-        password = temp.hexdigest();
-        
-        sql = "insert into User (name, password, email) values (%s, %s, %s)";
+    def createUser(self, userName, password, email=None):
+        temp = hashlib.md5()
+        temp.update(password.encode("utf-8"))
+        password = temp.hexdigest()
+
+        sql = "insert into User (name, password, email) values (%s, %s, %s)"
         try:
-            self._cursor.execute(sql, (userName, password, email));
-            self._connection.commit();
-            return True;
+            self._cursor.execute(sql, (userName, password, email))
+            self._connection.commit()
+            return True
         except Exception as e:
             if e.args[0] == 1062:
-                print("该用户已经注册！！");
-            return False;
-    
+                print("该用户已经注册！！")
+            return False
+
     def changePassword(self, userName, password):
-        temp = hashlib.md5();
-        temp.update(password.encode("utf-8"));
-        password = temp.hexdigest();
+        temp = hashlib.md5()
+        temp.update(password.encode("utf-8"))
+        password = temp.hexdigest()
 
-        sql = "update User set password = %s where name = %s";
+        sql = "update User set password = %s where name = %s"
         try:
-            self._cursor.execute(sql, (password, userName));
-            self._connection.commit();
-            return True;
+            self._cursor.execute(sql, (password, userName))
+            self._connection.commit()
+            return True
         except Exception as e:
-            print(e);
-            return False;
-
+            print(e)
+            return False
 
     def changeEmail(self, userName, email):
-        sql = "update User set email = %s where name = %s";
+        sql = "update User set email = %s where name = %s"
         try:
-            self._cursor.execute(sql, (email, userName));
-            self._connection.commit();
-            return True;
+            self._cursor.execute(sql, (email, userName))
+            self._connection.commit()
+            return True
         except Exception as e:
-            print(e);
-            return False;
+            print(e)
+            return False
 
     def getUserAll(self, userName):
-        sql = "select name, password, email from User where name = %s";
+        sql = "select name, password, email from User where name = %s"
 
         try:
-            self._cursor.execute(sql, userName);
-            return self._cursor.fetchone();
+            self._cursor.execute(sql, userName)
+            return self._cursor.fetchone()
         except Exception as e:
-            print(e);
-            return None;
+            print(e)
+            return None
 
     def getPassword(self, userName):
-        sql = "select password from User where name = %s";
+        sql = "select password from User where name = %s"
         try:
-            self._cursor.execute(sql, userName);
-            return self._cursor.fetchone()[0];
+            self._cursor.execute(sql, userName)
+            return self._cursor.fetchone()[0]
         except Exception as e:
-            print(e);
-            return None;
+            print(e)
+            return None
 
     def getEmail(self, userName):
-        sql = "select email from User where name = %s";
+        sql = "select email from User where name = %s"
         try:
-            self._cursor.execute(sql, userName);
-            return self._cursor.fetchone()[0];
+            self._cursor.execute(sql, userName)
+            return self._cursor.fetchone()[0]
         except Exception as e:
-            print(e);
-            return None;
+            print(e)
+            return None
 
     def userLoginUp(self, userName, password):
-       
-        result = self.getPassword(userName);
 
-        temp = hashlib.md5();
-        temp.update(password.encode("utf-8"));
-        temp = temp.hexdigest();
+        result = self.getPassword(userName)
+
+        temp = hashlib.md5()
+        temp.update(password.encode("utf-8"))
+        temp = temp.hexdigest()
 
         if temp == result:
-            return True;
+            return True
         else:
-            return False;
+            return False
 
+    def addWishMovice(self, moviceName, userName, sendEmial=False, savePath=None):
+        sql = "insert into WishMovies (moviceName, userName, createTime, sendEmail, savePath) values (%s, %s, %s, %s, %s)"
+        if savePath and not os.path.isdir(savePath):
+            print("path is inavaliable!")
+            savePath = None
+        try:
+            self._cursor.execute(
+                sql, (moviceName, userName, datetime.datetime.now(), sendEmial, savePath))
+            self._connection.commit()
+            return True
+        except Exception as e:
+            # userName inavalibel
+            if e.args[0] == 1062:
+                print("该用户已添加该部电影");
+            elif e.args[0] == 1452:
+                print("无效的用户")
+            print(e)
+            return False
 
-    def addWishMovice():
-        
-
-
-
-
-
+    def whisMoviesName():
+        sql = 
 
 
 if __name__ == "__main__":
 
-
-    db = Aria2cMySQL();
-    db.connect();
-
-    db.userLoginUp("ex", "7866");
-    db.getEmail("ex");
-    db.getPassword("ex");
-    db.getUserAll("ex");
-
-
-    
+    db = Aria2cMySQL()
+    db.connect()
+    db.addWishMovice("蜘dgdsd", "ex")

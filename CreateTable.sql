@@ -7,7 +7,7 @@ create table Downloads
     speed int(10),
     useTime int(10) default 0
 ) charset = utf8;
-
+                
 
 
 create table User
