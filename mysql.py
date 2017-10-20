@@ -14,11 +14,12 @@ StaticConfig = {
     "charset": "utf8",
 }
 
+
 class DownloadStatus(Enum):
     Inavalibel = 0
-    Running = 1
+    Delete = 1
+    Running = 2
     Pause = 3
-    Delete = 3
 
 
 class Aria2cMySQL:
@@ -134,28 +135,57 @@ class Aria2cMySQL:
         except Exception as e:
             # userName inavalibel
             if e.args[0] == 1062:
-                print("该用户已添加该部电影");
+                print("该用户已添加该部电影")
             elif e.args[0] == 1452:
                 print("无效的用户")
             print(e)
             return False
 
     def whosNeedSendEmail(self, movice):
-        sql = "select name, email from WishMovies inner join User where moviceName = %s and sendEmail = true group by name";
+        sql = "select name, email from WishMovies inner join User where moviceName = %s and sendEmail = true group by name"
         try:
-            self._cursor.execute(sql, movice);
+            self._cursor.execute(sql, movice)
+            return self._cursor.fetchall()
+        except Exception as e:
+            print(e)
+            return None;
+
+    def moviceNeedToGetUrl(self):
+        sql = "select moviceName from WishMovies where moviceName not in (select moviceName from Downloads where status > 1)";
+
+        try:
+            self._cursor.execute(sql);
             return self._cursor.fetchall();
         except Exception as e:
             print(e);
+            return None;
 
-    def moviceNeedToGetUrl(self):
-        pass
+    def downloadInfo(self, gid = None):
+        if gid :
+            sql = "select * from Downloads where gid = %s" % gid;
+        else:
+            sql = "select * from Downloads";
+        try:
+            self._cursor.execute(sql);
+            return self._cursor.fetchall();
+        except Exception as e:
+            print(e);
+            return None;
+
+    def updateDownLoadInfo(self, gid, speed, useTime = 2, size = 0):
+        sql = "update Downloads set speed = %s, useTime +=%s, size = %s wher gid = %s";
+        try:
+            self._cursor.execute(sql, (speed, useTime, size, gid));
+            self._connection.commit();
+            return True;
+        except Exception as e:
+            print(e);
+            return False;
 
 
 if __name__ == "__main__":
 
     db = Aria2cMySQL()
-    db.connect();
-   
+    db.connect()
 
-    print(DownloadStatus.Delete.value);
+
