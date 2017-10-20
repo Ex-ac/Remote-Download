@@ -3,6 +3,8 @@ import hashlib
 import datetime
 import os
 
+from enum import Enum
+
 StaticConfig = {
     "host": "extryi.top",
     "port": 3306,
@@ -11,6 +13,12 @@ StaticConfig = {
     "db": "study",
     "charset": "utf8",
 }
+
+class DownloadStatus(Enum):
+    Inavalibel = 0
+    Running = 1
+    Pause = 3
+    Delete = 3
 
 
 class Aria2cMySQL:
@@ -132,12 +140,22 @@ class Aria2cMySQL:
             print(e)
             return False
 
-    def whisMoviesName():
-        sql = 
+    def whosNeedSendEmail(self, movice):
+        sql = "select name, email from WishMovies inner join User where moviceName = %s and sendEmail = true group by name";
+        try:
+            self._cursor.execute(sql, movice);
+            return self._cursor.fetchall();
+        except Exception as e:
+            print(e);
+
+    def moviceNeedToGetUrl(self):
+        pass
 
 
 if __name__ == "__main__":
 
     db = Aria2cMySQL()
-    db.connect()
-    db.addWishMovice("蜘dgdsd", "ex")
+    db.connect();
+   
+
+    print(DownloadStatus.Delete.value);

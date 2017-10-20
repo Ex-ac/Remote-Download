@@ -3,7 +3,7 @@ create table Downloads
 	gid int(64) not null primary key,
 	moviceName varchar(128) not null,
     savePath varchar(256) default 'default save path',
-    status bit(3) default 0,
+    status bit(3) default 3,
     speed int(10),
     useTime int(10) default 0
 ) charset = utf8;
