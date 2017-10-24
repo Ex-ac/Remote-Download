@@ -3,6 +3,7 @@ import subprocess
 import time
 import os
 
+import robotaparser
+
 if __name__ == "__main__":
-    print(os.path.isdir(r"C:/Users/Ex"));
-    print(os.path.isdir(r"D:/User/Ex"));
+    print(builtwith.parse("http://www.80s.tw/"));

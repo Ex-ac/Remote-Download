@@ -1,0 +1,83 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "/usr/include",
+                "/usr/local/include",
+                "${workspaceRoot}"
+            ],
+            "defines": [],
+            "intelliSenseMode": "clang-x64",
+            "browse": {
+                "path": [
+                    "/usr/include",
+                    "/usr/local/include",
+                    "${workspaceRoot}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ]
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "/usr/include",
+                "/usr/local/include",
+                "${workspaceRoot}"
+            ],
+            "defines": [],
+            "intelliSenseMode": "clang-x64",
+            "browse": {
+                "path": [
+                    "/usr/include",
+                    "/usr/local/include",
+                    "${workspaceRoot}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "D:/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.11.25503/include/*",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0/um",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0/ucrt",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0/shared",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0/winrt",
+                "D:/Qt/Qt5.9.2/5.9.2/msvc2017_64/include/QtCore",
+                "D:/Qt/Qt5.9.2/5.9.2/msvc2017_64/include/QtGui",
+                "D:/Qt/Qt5.9.2/5.9.2/msvc2017_64/include/QtGui",
+                "D:/Qt/Qt5.9.2/5.9.2/msvc2017_64/include/QtWidgets",
+                "${workspaceRoot}"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE"
+            ],
+            "intelliSenseMode": "msvc-x64",
+            "browse": {
+                "path": [
+                    "D:/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.11.25503/include/*",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0/um",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0/ucrt",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0/shared",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0/winrt",
+                    "D:/Qt/Qt5.9.2/5.9.2/msvc2017_64/include/QtCore",
+                    "D:/Qt/Qt5.9.2/5.9.2/msvc2017_64/include/QtGui",
+                    "D:/Qt/Qt5.9.2/5.9.2/msvc2017_64/include/QtGui",
+                    "D:/Qt/Qt5.9.2/5.9.2/msvc2017_64/include/QtWidgets",
+                    "${workspaceRoot}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        }
+    ],
+    "version": 3
+}
