@@ -35,7 +35,7 @@ def getMovicesInformationFrom80s(moviceName):
 
     html = etree.HTML(urllib.request.urlopen(request).read().decode("utf8"));
     
-
+    resultList = [];
     result = html.xpath('//a[@target="_blank"]');
 
     for each in result:
@@ -43,7 +43,6 @@ def getMovicesInformationFrom80s(moviceName):
             "url" : "",
             "name" : ""
         };
-        #print(urllib.parse.urljoin(url, each.xpath("./@href")));
         try:
 
             temp["url"] = urllib.parse.urljoin(url, each.xpath("./@href")[0]);
@@ -52,16 +51,33 @@ def getMovicesInformationFrom80s(moviceName):
             tempStr = tempStr.replace(" ", "");
             tempStr = tempStr.replace("\n", "");
             temp["name"] = tempStr;
-            print(temp);
+            resultList.append(temp);
+    
         except Exception as e:
             print(e);
+    return resultList;
 
-
-def getMOvicesDownloadUrlFrom80s(moviceInformationPage):
+def getMovicesDownloadUrlFrom80s(moviceInformationPage):
     headers = {
-        
+        "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Encoding" : "gzip, deflate",
+        "Cache-Control" : "max-age=0",
+        "Connection" : "keep-alive",
+        "Host" : "www.80s.tw",
+        "Referer" : "http://www.80s.tw/",
+        "Upgrade-Insecure-Requests" : "1",
+        "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
     };
+    moviceInformationPage += "?charset=utf-8";
+    print(moviceInformationPage);
+    request = urllib.request.Request(moviceInformationPage, headers = headers);
 
+    html = etree.HTML(urllib.request.urlopen(request).read().decode("gbk"));
+
+
+    result = html.xpath('//li[@class="clearfix dlurlelement backcolor1"]//input/@value');
+
+    print(result);
 
 def getMovicesInformationFromPiaoHua(moviceName):
     
@@ -81,13 +97,11 @@ def getMovicesInformationFromPiaoHua(moviceName):
 
     searchUrl = "http://vod.cnzol.com/search.php?chid=201&charset=utf-8&%s" % data;
 
-
-
     html = etree.HTML(urllib.request.urlopen(searchUrl).read().decode("utf8"));
 
     result = html.xpath('//div[@id="list"]//strong');
-    print(result);
 
+    resultList = [];
     for each in result:
         temp = {
             'url' : "",
@@ -98,22 +112,40 @@ def getMovicesInformationFromPiaoHua(moviceName):
 
             temp["url"] = "".join(each.xpath("./a/@href"));
             temp["name"] = "".join(each.xpath(".//font/text()"));
-            print(temp);
+            resultList.append(temp);
         except Exception as e:
             print(e);
+    return resultList;
 
 
+def getMovicesDownloadUrlFromPiaohua(moviceInformationPage):
+    headers = {
+        "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+        "Cache-Control" : "max-age=0",
+        "Connection" : "keep-alive",
+        "Host" : "vod.cnzol.com",
+        "Referer" : "http://vod.cnzol.com/",
+        "Upgrade-Insecure-Requests" : "1",
+        "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
+    };
+    moviceInformationPage = moviceInformationPage + "?charset=utf-8";
 
+    request = urllib.request.Request(moviceInformationPage, headers = headers);
+    html = urllib.request.urlopen(request).read().decode("utf8");
 
+    html = etree.HTML(html);
+
+    result = html.xpath("//table//button/@data-clipboard-text");
+
+    resultList = [];
+    
+    for each in result:
+        resultList.append("".join(each));
+
+    return resultList;
+        
 
 
 
 if __name__ == "__main__":
-
-    getMovicesInformationFrom80s("变形金刚");
-
-
-
-
-
-
+    getMovicesDownloadUrlFrom80s("http://www.80s.tw/ju/21533");
