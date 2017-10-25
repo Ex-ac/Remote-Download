@@ -60,7 +60,6 @@ def getMovicesInformationFrom80s(moviceName):
 def getMovicesDownloadUrlFrom80s(moviceInformationPage):
     headers = {
         "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-        "Accept-Encoding" : "gzip, deflate",
         "Cache-Control" : "max-age=0",
         "Connection" : "keep-alive",
         "Host" : "www.80s.tw",
@@ -68,16 +67,21 @@ def getMovicesDownloadUrlFrom80s(moviceInformationPage):
         "Upgrade-Insecure-Requests" : "1",
         "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
     };
-    moviceInformationPage += "?charset=utf-8";
+    #moviceInformationPage += "?charset=utf-8";
     print(moviceInformationPage);
     request = urllib.request.Request(moviceInformationPage, headers = headers);
 
-    html = etree.HTML(urllib.request.urlopen(request).read().decode("gbk"));
+    html = etree.HTML(urllib.request.urlopen(request).read().decode("utf8"));
 
 
     result = html.xpath('//li[@class="clearfix dlurlelement backcolor1"]//input/@value');
+    resultList = [];
+    for each in result:
+       resultList.append("".join(each));
 
-    print(result);
+    print(resultList);
+    
+    return resultList;
 
 def getMovicesInformationFromPiaoHua(moviceName):
     

@@ -151,7 +151,7 @@ class Aria2cMySQL:
             return None;
 
     def moviceNeedToGetUrl(self):
-        sql = "select moviceName from WishMovies where moviceName not in (select moviceName from Downloads where status > 1)";
+        sql = "select moviceName from WishMovies where needToCrawl = true";
 
         try:
             self._cursor.execute(sql);
@@ -160,10 +160,52 @@ class Aria2cMySQL:
             print(e);
             return None;
 
+    
+    
+    def addMovicesInformantion(self, wishName, movicesInformantionList):
+        sql = "insert into MovicesInformantion (wishMoviceName, moviceName, url) values (%s, %s, %s)";
+        
+        errorMsg = [];
+        for each in movicesInformantionList:
+            try:
+                self._cursor.execute(sql, (wishName, each["name"], each["url"]));
+            except Exception as e:
+                print(e);
+                errorMsg.append(e);
+        try:
+            self._connection.commit();
+            errorMsg.append(True);
+        except Exception as e:
+            errorMsg.append(e);
+            print(e);
+
+        return errorMsg;
+       
 
 
-    def 
 
+
+    def addMoviceDownloadUrl(self, moviceName, downloadUrlList):
+        sql = "insert into MovicesDownloadUrl (moviceName, downloadUrl, createTime) valuse (%s, %s, %s)";
+
+        try:
+            self._cursor.execute(sql, (moviceName, downloadUrl, datetime.datetime.now()));
+            self._connection.commit();
+            return True;
+        except Exception as e:
+            print(e);
+            return False;
+
+    def setMoviceDownloadUrlInavailable(self, downloadUrl):
+        sql = "update  MovicesDownloadUrl set available = false where downloadUrl = %s";
+
+        try:
+            self._cursor.execute(sql, downloadUrl);
+            self._connection.commit();
+            return True;
+        except Exception as e:
+            print(e);
+            return False;
 
 
     def downloadInfo(self, gid = None):
