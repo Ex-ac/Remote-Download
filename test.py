@@ -2,8 +2,8 @@ from sys import argv
 import subprocess
 import time
 import os
-
-import robotaparser
+import urllib.parse
+import urllib.request
 
 if __name__ == "__main__":
-    print(builtwith.parse("http://www.80s.tw/"));
+    

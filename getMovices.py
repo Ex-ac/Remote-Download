@@ -6,7 +6,9 @@ from lxml import etree
 import codecs
 import string
 
-def getMovicesInfomationForm80s(moviceName):
+
+
+def getMovicesInformationFrom80s(moviceName):
 
     headers = {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
@@ -55,15 +57,20 @@ def getMovicesInfomationForm80s(moviceName):
             print(e);
 
 
+def getMOvicesDownloadUrlFrom80s(moviceInformationPage):
+    headers = {
+        
+    };
 
-def getMovicesInfomactionFromPiaoHua(moviceName):
+
+def getMovicesInformationFromPiaoHua(moviceName):
     
     headers = {
         "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
         "Accept-Encoding" : "gzip, deflate",
-        "Accept-Language" : "zh-CN,zh;q=0.8",
         "Cache-Control" : "max-age=0",
-        "Connection" : "keep-alive"
+        "Connection" : "keep-alive",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
     };
 
     parameters = {
@@ -77,12 +84,33 @@ def getMovicesInfomactionFromPiaoHua(moviceName):
 
 
     html = etree.HTML(urllib.request.urlopen(searchUrl).read().decode("utf8"));
-   
+
+    result = html.xpath('//div[@id="list"]//strong');
+    print(result);
+
+    for each in result:
+        temp = {
+            'url' : "",
+            "name" : ""
+        };
+
+        try:
+
+            temp["url"] = "".join(each.xpath("./a/@href"));
+            temp["name"] = "".join(each.xpath(".//font/text()"));
+            print(temp);
+        except Exception as e:
+            print(e);
+
+
+
+
+
 
 
 if __name__ == "__main__":
 
-    getMovicesInfomationForm80s("变形金刚");
+    getMovicesInformationFrom80s("变形金刚");
 
 
 

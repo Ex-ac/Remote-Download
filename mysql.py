@@ -160,6 +160,12 @@ class Aria2cMySQL:
             print(e);
             return None;
 
+
+
+    def 
+
+
+
     def downloadInfo(self, gid = None):
         if gid :
             sql = "select * from Downloads where gid = %s" % gid;
