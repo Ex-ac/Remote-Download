@@ -151,12 +151,14 @@ class Aria2cMySQL:
             return None;
 
     def moviceNeedToGetUrl(self):
-        sql = "select moviceName from WishMovies where needToCrawl = true";
+        sql = "select moviceName from WishMovies where needToCrawl = true group by moviceName";
 
         try:
             self._cursor.execute(sql);
             return self._cursor.fetchall();
+        
         except Exception as e:
+            
             print(e);
             return None;
 
@@ -170,12 +172,22 @@ class Aria2cMySQL:
             try:
                 self._cursor.execute(sql, (wishName, each["name"], each["url"]));
             except Exception as e:
-                print(e);
-                errorMsg.append(e);
+                if e.args[0] == 1062:
+                    sqlt = "update MovicesInformate set createTime = %s, downloadUrl = %s where moviceName = %s";
+                    try:
+                        self._cursor.execute(sqlt, (datetime.datetime.now(), each["url"], each["name"]));
+                    except Exception as e:
+                        print(e);
+                        errorMsg.append(e);
+                else:
+                    print(e);
+                    errorMsg.append(e);
         try:
             self._connection.commit();
             errorMsg.append(True);
         except Exception as e:
+           
+            #主键约束则更新时间
             errorMsg.append(e);
             print(e);
 

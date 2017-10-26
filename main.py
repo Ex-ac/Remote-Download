@@ -10,7 +10,7 @@ if __name__ == "__main__":
             movicesInformantionList = [];
             movicesInformantionList.append(getMovicesInformationFrom80s(each));
             movicesInformantionList.append(getMOvicesInformationFromPiaoHua(each));
-            temp = db.addMOvicesInformantion(each, movicesInformantionList);
+            temp = db.addMovicesInformantion(each, movicesInformantionList);
             if temp[-1] != True:
                 #错误处理
                 pass;
