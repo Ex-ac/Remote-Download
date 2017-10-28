@@ -6,7 +6,7 @@ import os
 from enum import Enum
 
 StaticConfig = {
-    "host": "extryi.top",
+    "host": "192.168.1.103",
     "port": 3306,
     "user": "user",
     "password": "7866",
@@ -26,7 +26,7 @@ class Aria2cMySQL:
 
     def __init__(self):
         self._connection = None
-        self.cursor = None
+        self._cursor = None
 
     def connect(self, config={}):
 
@@ -36,13 +36,13 @@ class Aria2cMySQL:
 
         try:
             self._connection = pymysql.connect(**temp)
-            self._cursor = self._connection.cursor()
+            self._cursor = self._connection.cursor(cursor=pymysql.cursors.DictCursor)
             return True
         except Exception as identifier:
             print(identifier)
             return False
 
-    def moviceNeedToGetUrl(self):
+    def moviceNeedGetUrl(self):
         sql = "select moviceName from WishMovies where needToCrawl = true group by moviceName";
 
         try:
@@ -65,18 +65,22 @@ class Aria2cMySQL:
             print(e);
             return None;
 
+
+
     def addMovicesInformantion(self, wishName, movicesInformantionList):
-        sql = "insert into MovicesInformantion (wishMoviceName, moviceName, url, source) values (%s, %s, %s, %s)";
-        
+        sql = "insert into MovicesInformantion (wishMoviceName, moviceName, url, source, createTime) values (%s, %s, %s, %s, %s)";
+
         errorMsg = [];
         for each in movicesInformantionList:
+
             try:
-                self._cursor.execute(sql, (wishName, each["name"], each["url"], each["source"]));
+
+                self._cursor.execute(sql, (wishName, each["name"], each["url"], each["source"], datetime.datetime.now()));
             except Exception as e:
                 if e.args[0] == 1062:
-                    sqlt = "update MovicesInformate set createTime = %s, downloadUrl = %s where moviceName = %s";
+                    sqlt = "update MovicesInformantion set createTime = %s where url = %s";
                     try:
-                        self._cursor.execute(sqlt, (datetime.datetime.now(), each["url"], each["name"]));
+                        self._cursor.execute(sqlt, (datetime.datetime.now(), each["url"]));
                     except Exception as e:
                         print(e);
                         errorMsg.append(e);
@@ -87,11 +91,8 @@ class Aria2cMySQL:
             self._connection.commit();
             errorMsg.append(True);
         except Exception as e:
-           
-            #主键约束则更新时间
             errorMsg.append(e);
             print(e);
-
         return errorMsg;
        
 
@@ -99,15 +100,26 @@ class Aria2cMySQL:
 
 
     def addMoviceDownloadUrl(self, moviceName, downloadUrlList):
-        sql = "insert into MovicesDownloadUrl (moviceName, downloadUrl) valuse (%s, %s)";
+        sql = "insert into MovicesDownloadUrl (moviceName, downloadUrl) values (%s, %s)";
 
+
+        errorMsg = [];
+        for each in downloadUrlList:
+            try:
+                print(sql % (moviceName, each));
+                self._cursor.execute(sql, (moviceName, each));
+            except Exception as e:
+                if e.args[0] != 1062:
+                    print(e);
+                    errorMsg.append(e);
         try:
-            self._cursor.execute(sql, (moviceName, downloadUrl, datetime.datetime.now()));
             self._connection.commit();
-            return True;
+            errorMsg.append(True);
         except Exception as e:
+            errorMsg.append(e);
             print(e);
-            return False;
+
+        return errorMsg;
 
 
 '''
@@ -258,8 +270,6 @@ class Aria2cMySQL:
             return False;
 '''
 
-
-print("using Mysql.py");
 
 if __name__ == "__main__":
 

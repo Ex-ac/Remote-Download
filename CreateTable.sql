@@ -21,9 +21,9 @@ create table WishMovies
 
 create table MovicesInformantion
 (
-	moviceName varchar(128) not null primary key,
+	moviceName varchar(128) not null,
     wishMoviceName varchar(128) not null,
-    url varchar(1024) not null,
+    url varchar(1024) not null  primary key,
     source varchar(64) not null,
     createTime datetime,
     status bit(2) default 2,
@@ -35,10 +35,12 @@ create table MovicesInformantion
     status = 2 start
 */
 
+
+create index MovicesInformantion_moviceName on MovicesInformantion(moviceName);
 create table MovicesDownloadUrl
 (
     moviceName varchar(128) not null,
-    downloadUrl varchar(512) not null,
+    downloadUrl varchar(1024) not null,
     available bool default true,
     primary key (downloadUrl),
     foreign key (moviceName) references MovicesInformantion(moviceName)
@@ -50,13 +52,11 @@ delimiter &&
 create trigger setMovicesDownloadUrlAvailable
 after update on MovicesDownloadUrl for each row
 begin
-set @count = (select count(*)  from MovicesDownloadUrl where MovicesDownloadUrl.moviceName = new.moviceName and MovicesDownloadUrl.available = true)
+set @count = (select count(*)  from MovicesDownloadUrl where MovicesDownloadUrl.moviceName = new.moviceName and MovicesDownloadUrl.available = true);
     
 if  @count = 0 then
-	update MovicesInformantion set status = 2 where moviceName = new.moviceName
-else
-	@count = 0
-end if
+	update MovicesInformantion set status = 2 where moviceName = new.moviceName;
+end if;
 end; &&
 
 
@@ -67,8 +67,8 @@ for each row
 begin
 
     if new.needToCrawl then
-        update on MovicesInformantion set  status = 2; 
+        update MovicesInformantion set  status = 2; 
     else
-        update on MovicesInformantion set status = 0;
+        update MovicesInformantion set status = 0;
     end if;
 end; &&

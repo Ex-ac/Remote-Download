@@ -69,18 +69,18 @@ def getMovicesDownloadUrlFrom80s(moviceInformationPage):
         "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
     };
     #moviceInformationPage += "?charset=utf-8";
-    print(moviceInformationPage);
+
     request = urllib.request.Request(moviceInformationPage, headers = headers);
 
     html = etree.HTML(urllib.request.urlopen(request).read().decode("utf8"));
 
 
-    result = html.xpath('//li[@class="clearfix dlurlelement backcolor1"]//input/@value');
+    result = html.xpath('//input[@name]/@value');
     resultList = [];
     for each in result:
        resultList.append("".join(each));
 
-    print(resultList);
+
     
     return resultList;
 
