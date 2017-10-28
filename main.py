@@ -17,4 +17,17 @@ if __name__ == "__main__":
         
         movicesInformantionList = [];
 
-        movicesInformantionList = db.
+        movicesInformantionList = db.MovicesInformantionNeedUpdate();
+
+        movicesDownloadUrlList = [];
+
+        for each in movicesInformantionList:
+            temp = [];
+            if each["source"] == "piaohua":
+                temp = getMovicesDownloadUrlFromPiaohua(each["url"]);
+            elif each["source"] == "80s":
+                temp = getMovicesDownloadUrlFrom80s(each["url"]);
+            else:
+                pass;
+
+            d

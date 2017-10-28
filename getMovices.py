@@ -41,7 +41,8 @@ def getMovicesInformationFrom80s(moviceName):
     for each in result:
         temp = {
             "url" : "",
-            "name" : ""
+            "name" : "",
+            "source" : "80s"
         };
         try:
 
@@ -109,7 +110,8 @@ def getMovicesInformationFromPiaoHua(moviceName):
     for each in result:
         temp = {
             'url' : "",
-            "name" : ""
+            "name" : "",
+            "source" : "piaohua"
         };
 
         try:

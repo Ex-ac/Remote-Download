@@ -26,9 +26,14 @@ create table MovicesInformantion
     url varchar(1024) not null,
     source varchar(64) not null,
     createTime datetime,
-    status bit(2) default 3,
+    status bit(2) default 2,
     foreign key (wishMoviceName) references WishMovies(moviceName)
 ) charset = utf8;
+/*
+    status = 0 inavailable
+    status = 1 waiting
+    status = 2 start
+*/
 
 create table MovicesDownloadUrl
 (
@@ -39,14 +44,6 @@ create table MovicesDownloadUrl
     foreign key (moviceName) references MovicesInformantion(moviceName)
 ) charset = utf8;
 
-
-create trigger MovicesInformantionSelect
-before select on MovicesInformantion
-for each row
-begin
-    update MovicesInformantion set status = 3 where datediff(now(), createTime) > 10
-end
-
  
 
 delimiter &&
@@ -56,8 +53,22 @@ begin
 set @count = (select count(*)  from MovicesDownloadUrl where MovicesDownloadUrl.moviceName = new.moviceName and MovicesDownloadUrl.available = true)
     
 if  @count = 0 then
-	update MovicesInformantion set status = 3 where moviceName = new.moviceName
+	update MovicesInformantion set status = 2 where moviceName = new.moviceName
 else
 	@count = 0
 end if
+end; &&
+
+
+delimiter &&
+create trigger setWishMovicesAvailable 
+after update on WishMovies
+for each row
+begin
+
+    if new.needToCrawl then
+        update on MovicesInformantion set  status = 2; 
+    else
+        update on MovicesInformantion set status = 0;
+    end if;
 end; &&

@@ -42,6 +42,75 @@ class Aria2cMySQL:
             print(identifier)
             return False
 
+    def moviceNeedToGetUrl(self):
+        sql = "select moviceName from WishMovies where needToCrawl = true group by moviceName";
+
+        try:
+            self._cursor.execute(sql);
+            return self._cursor.fetchall();
+        
+        except Exception as e:
+            
+            print(e);
+            return None;
+
+    
+
+    def movicesInformantionNeedUpdate(self):
+        sql = "select moviceName, url, source from MovicesInformantion where status = 2";
+        try:
+            self._cursor.execute(sql);
+            return self._cursor.fetchall();
+        except Exception as e:
+            print(e);
+            return None;
+
+    def addMovicesInformantion(self, wishName, movicesInformantionList):
+        sql = "insert into MovicesInformantion (wishMoviceName, moviceName, url, source) values (%s, %s, %s, %s)";
+        
+        errorMsg = [];
+        for each in movicesInformantionList:
+            try:
+                self._cursor.execute(sql, (wishName, each["name"], each["url"], each["source"]));
+            except Exception as e:
+                if e.args[0] == 1062:
+                    sqlt = "update MovicesInformate set createTime = %s, downloadUrl = %s where moviceName = %s";
+                    try:
+                        self._cursor.execute(sqlt, (datetime.datetime.now(), each["url"], each["name"]));
+                    except Exception as e:
+                        print(e);
+                        errorMsg.append(e);
+                else:
+                    print(e);
+                    errorMsg.append(e);
+        try:
+            self._connection.commit();
+            errorMsg.append(True);
+        except Exception as e:
+           
+            #主键约束则更新时间
+            errorMsg.append(e);
+            print(e);
+
+        return errorMsg;
+       
+
+
+
+
+    def addMoviceDownloadUrl(self, moviceName, downloadUrlList):
+        sql = "insert into MovicesDownloadUrl (moviceName, downloadUrl) valuse (%s, %s)";
+
+        try:
+            self._cursor.execute(sql, (moviceName, downloadUrl, datetime.datetime.now()));
+            self._connection.commit();
+            return True;
+        except Exception as e:
+            print(e);
+            return False;
+
+
+'''
     def createUser(self, userName, password, email=None):
         temp = hashlib.md5()
         temp.update(password.encode("utf-8"))
@@ -149,65 +218,12 @@ class Aria2cMySQL:
         except Exception as e:
             print(e)
             return None;
-
-    def moviceNeedToGetUrl(self):
-        sql = "select moviceName from WishMovies where needToCrawl = true group by moviceName";
-
-        try:
-            self._cursor.execute(sql);
-            return self._cursor.fetchall();
-        
-        except Exception as e:
-            
-            print(e);
-            return None;
+'''
 
     
     
-    def addMovicesInformantion(self, wishName, movicesInformantionList):
-        sql = "insert into MovicesInformantion (wishMoviceName, moviceName, url) values (%s, %s, %s)";
-        
-        errorMsg = [];
-        for each in movicesInformantionList:
-            try:
-                self._cursor.execute(sql, (wishName, each["name"], each["url"]));
-            except Exception as e:
-                if e.args[0] == 1062:
-                    sqlt = "update MovicesInformate set createTime = %s, downloadUrl = %s where moviceName = %s";
-                    try:
-                        self._cursor.execute(sqlt, (datetime.datetime.now(), each["url"], each["name"]));
-                    except Exception as e:
-                        print(e);
-                        errorMsg.append(e);
-                else:
-                    print(e);
-                    errorMsg.append(e);
-        try:
-            self._connection.commit();
-            errorMsg.append(True);
-        except Exception as e:
-           
-            #主键约束则更新时间
-            errorMsg.append(e);
-            print(e);
 
-        return errorMsg;
-       
-
-
-
-
-    def addMoviceDownloadUrl(self, moviceName, downloadUrlList):
-        sql = "insert into MovicesDownloadUrl (moviceName, downloadUrl, createTime) valuse (%s, %s, %s)";
-
-        try:
-            self._cursor.execute(sql, (moviceName, downloadUrl, datetime.datetime.now()));
-            self._connection.commit();
-            return True;
-        except Exception as e:
-            print(e);
-            return False;
-
+'''
     def setMoviceDownloadUrlInavailable(self, downloadUrl):
         sql = "update  MovicesDownloadUrl set available = false where downloadUrl = %s";
 
@@ -218,7 +234,6 @@ class Aria2cMySQL:
         except Exception as e:
             print(e);
             return False;
-
 
     def downloadInfo(self, gid = None):
         if gid :
@@ -241,7 +256,10 @@ class Aria2cMySQL:
         except Exception as e:
             print(e);
             return False;
+'''
 
+
+print("using Mysql.py");
 
 if __name__ == "__main__":
 
