@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
 
         for each in movicesInformantionList:
-            print(each);
+
             temp = [];
             if each["source"] == "piaohua":
                 pass;

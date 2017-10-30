@@ -106,7 +106,6 @@ class Aria2cMySQL:
         errorMsg = [];
         for each in downloadUrlList:
             try:
-                print(sql % (moviceName, each));
                 self._cursor.execute(sql, (moviceName, each));
             except Exception as e:
                 if e.args[0] != 1062:
